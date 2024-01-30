@@ -1,0 +1,31 @@
+.SUFFIXES:	.c .S .o
+
+CC= gcc -g -c
+LD= ld 
+AS= as
+AR= ar
+CPP= cpp
+LIBS=
+INCS=  -I/usr/include  -I/usr/include/X11 -I/usr/include/X11/extensions -I.
+DEFS= -Dlinux  -D_POSIX_C_SOURCE=199309L -D_POSIX_SOURCE -D_XOPEN_SOURCE -D_BSD_SOURCE -D_SVID_SOURCE  -D_GNU_SOURCE   -DFUNCPROTO=15 -DNARROWPROTO   -DMALLOC_0_RETURNS_NULL  -DHAS_SNPRINTF -DLIBX11  -DXLOCALEDIR=\"/usr/share/X11/locale\"  -DXTHREADS  -D_REENTRANT -DXUSE_MTSAFE_API
+CFLAGS= $(DEFS) $(INCS) -O3 -fpic -fPIC
+
+LIBXEXT= nodpms.o xshape.o xshm.o globals.o extutil.o xdbe.o XSync.o
+	
+all	: libXext.a
+
+clean	:
+	rm *.o
+	rm libXext*
+
+libXext.a : $(LIBXEXT)
+	$(AR) rvc libXext.a  $(LIBXEXT)
+	ranlib libXext.a
+	cc -v -shared -nodefaultlibs $(LIBXEXT) -lm  -Wl,-soname -Wl,libXext.so.6 -o libXext.so.6.4.0
+	strip libXext.so.6.4.0
+
+.c.o :
+	$(CC) $(CFLAGS) -c $<
+
+
+

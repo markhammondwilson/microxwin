@@ -1,0 +1,59 @@
+Most of source code is based on the X11 distribution and the individual files show copyright information.
+
+Some of the source files are from Xlibemu project with the following copyright:
+
+/* $Id: copying.h 1.1 1994/01/12 04:26:15 ulrich Exp $ */
+/*
+ * Xlibemu
+ *
+ * Copyright 1993, 1994
+ * Ulrich Leodolter, Austria 3051 St.Christophen, Ludmerfeld 33.
+ *
+ * This software may be freely copied, modified and redistributed without
+ * fee provided that this copyright notice is preserved intact on all
+ * copies and modified copies.
+ *
+ * There is no warranty or other guarantee of fitness of this software.
+ * It is provided solely "as is". The author(s) disclaim(s) all
+ * responsibility and liability with respect to this software's usage or
+ * its effect upon hardware or computer systems.
+ */
+
+The file x11ioctl.h, xlibglue.h and xlibglue.c have the following copyright:
+
+/*
+ * Copyright (C) 2000-2009  Vasant Kanchan, http://www.microxwin.com
+ *
+ * This software may be freely copied and redistributed without
+ * fee provided that this copyright notice is preserved intact on all
+ * copies and modified copies. 
+ * 
+ * However this file cannot be modified without consent of Vasant Kanchan.
+ * Please contact vkanchan@microxwin.com
+ *
+ * There is no warranty or other guarantee of fitness of this software.
+ * It is provided solely "as is". The author(s) disclaim(s) all
+ * responsibility and liability with respect to this software's usage or
+ * its effect upon hardware or computer systems.
+ */
+
+Any changes to X11 and Xlibemu source code have following copyright:
+
+/*
+ * Copyright (C) 2000-2009  Vasant Kanchan, http://www.microxwin.com
+ *
+ * This software may be freely copied and redistributed without
+ * fee provided that this copyright notice is preserved intact on all
+ * copies and modified copies. 
+ *
+ * There is no warranty or other guarantee of fitness of this software.
+ * It is provided solely "as is". The author(s) disclaim(s) all
+ * responsibility and liability with respect to this software's usage or
+ * its effect upon hardware or computer systems.
+ */
+
+Any binary kernel modules in the modules directory are the property of Vasant Kanchan
+and made available for demonstration purposes only. Please contact me for commercial
+distribution. However feel free to use for personal and non-commercial distribution.
+For further information contact info@microxwin.com or visit http://www.microxwin.com.
+

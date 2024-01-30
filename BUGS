@@ -1,0 +1,7 @@
+These are the known bugs
+
+1. If cursor font is enabled in xfonts.c (line 316) KDE crashes. But Tcl/TK needs CURSORFONT.
+   Currently this is disabled so now we can run KDE but not Tcl/TK.
+   
+2. Xevent and kernel module only supports PS/2 mouse.
+

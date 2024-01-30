@@ -1,0 +1,24 @@
+The gdkasync.c file is a replacement for the official gtk+-2**/gdk/x11/gdkasync.c.
+This file implements equivalent functions as defined in the original file. It calls
+standard Xlib functions so is compatible with both standard X11 and MicroXwin distribution.
+
+These are the steps we use to create a replacement gdk library for example on Slackware 10.2.
+
+1. cat /usr/lib/pkgconfig/gtk+-2.0.pc to determine exact gtk version. For Slackware 10.2 it
+   shows gtk+-2.6.10.
+
+2. As root download the version from http://www.gtk.org and untar in the home directory.
+
+3. Replace gtk+-2**/gdk/x11/gdkasync.c with the included gdkasync.c
+
+4 ./configure --prefix=/usr --enable-debug=no
+  This will create config.h and the necessary makefiles.
+  
+5. Comment out //#define HAVE_XSYNC 1 in config.h. We don't support this extension.
+
+6. make will build the whole package but we only need to replace one library.
+   Go to ~/gtk+-2.6.10/gdk/.libs and copy libgdk-x11-2.0.so.0.600.10 to /usr/lib. 
+   For safety you can backup the original.
+   
+
+

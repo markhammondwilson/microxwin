@@ -1,0 +1,82 @@
+.SUFFIXES:	.c .S .o
+
+CC= gcc -g -c 
+LD= ld 
+AS= as
+AR= ar
+CPP= cpp
+LIBS=
+INCS=  -I/usr/include -I/usr/X11R6/include  -I/usr/X11R6/include/X11 -I/usr/X11R6/include/X11/extensions -I. -I..
+DEFS=  -Dlinux  -D_POSIX_C_SOURCE=199309L -D_POSIX_SOURCE -D_XOPEN_SOURCE -D_BSD_SOURCE -D_SVID_SOURCE  -D_GNU_SOURCE   -DFUNCPROTO=15 -DNARROWPROTO   -DMALLOC_0_RETURNS_NULL  -DHAS_SNPRINTF -DLIBX11  -DXLOCALEDIR=\"/usr/share/X11/locale\"  -DERRORDB=\"/usr/X11R6/lib/X11/XErrorDB\"  -DKEYSYMDB=\"/usr/X11R6/lib/X11/XKeysymDB\"   -DXTHREADS  -D_REENTRANT -DXUSE_MTSAFE_API
+CFLAGS= $(DEFS) $(INCS) -O3 -fpic -fPIC -march=armv5te  -DMITSHM  -DXTESTEXT
+
+
+LIBX11= AutoRep.o  ChCmap.o \
+	Backgnd.o BdrWidth.o Border.o ChGC.o ChSaveSet.o  ChWindow.o ChkIfEv.o \
+	ChkMaskEv.o ChkTypEv.o ChkTypWEv.o ChkWinEv.o CirWinDn.o CirWinUp.o \
+	Clear.o ConfWind.o Context.o CopyGC.o CrGC.o CrWindow.o  \
+	DefCursor.o Depths.o DisName.o ErrDes.o FSSaver.o FSWrap.o \
+	FetchName.o FilterEv.o FreeGC.o GCMisc.o Geom.o  GetGCVals.o \
+	GetHints.o GetNrmHint.o xproperty.o GetRGBCMap.o GetStCmap.o GetTxtProp.o \
+	GetWMCMapW.o GetWMProto.o ICWrap.o IMWrap.o Iconify.o  IfEvent.o \
+	xfonts.o ImUtil.o KeyBind.o LockDis.o LowerWin.o MapRaised.o MaskEvent.o \
+	Misc.o	MoveWin.o NextEvent.o OCWrap.o OMWrap.o ParseCmd.o ParseGeom.o \
+	PeekEvent.o PeekIfEv.o Pending.o PixFormats.o PmapBgnd.o PmapBord.o \
+	PropAlloc.o PutBEvent.o QuStipShp.o QuTileShp.o QuTree.o Quarks.o \
+	RaiseWin.o RdBitF.o Region.o RegstFlt.o ScrResStr.o SelInput.o SetBack.o \
+	SetCRects.o SetClMask.o SetClOrig.o SetFont.o SetFore.o SetFunc.o SetHints.o \
+	SetLocale.o SetNrmHint.o SetPMask.o SetRGBCMap.o SetStCmap.o SetState.o \
+	SetStip.o SetTSOrig.o SetTile.o SetTxtProp.o SetWMCMapW.o SetWMProto.o \
+	StBytes.o StName.o StrToText.o TextExt.o TextExt16.o \
+	TextToStr.o UndefCurs.o VisUtil.o WMGeom.o WMProps.o WinEvent.o Withdraw.o \
+	WrBitF.o  evtomask.o lcCT.o lcCharSet.o lcConv.o lcDB.o lcDefConv.o \
+	lcDynamic.o lcEuc.o lcFile.o lcGenConv.o lcGeneric.o lcInit.o lcJis.o	\
+	lcPrTxt.o lcPubWrap.o lcPublic.o lcRM.o lcSjis.o lcStd.o lcTxtPr.o lcUTF8.o \
+	lcUtil.o lcWrap.o locking.o mbWMProps.o mbWrap.o omDefault.o omGeneric.o \
+	omImText.o omText.o omTextEsc.o omTextExt.o omTextPer.o omXChar.o  \
+	wcWrap.o color.o GetDflt.o StrKeysym.o KeysymStr.o \
+	XlibInt.o OpenDis.o ClDisplay.o Sync.o	ErrHndlr.o FreeEData.o \
+	Macros.o putimage.o Xrm.o GetPntMap.o ModMap.o  SetLStyle.o Synchro.o \
+	GetMoEv.o LiHosts.o ReconfWM.o \
+	imInt.o imCallbk.o imConv.o imDefFlt.o imDefIc.o imDefIm.o imDefLkup.o \
+	imDispch.o imEvToWire.o imExten.o imImSw.o imInsClbk.o \
+	imLcFlt.o imLcGIc.o imLcIc.o imLcIm.o imLcLkup.o imLcPrs.o \
+	imLcSIc.o imRm.o imRmAttr.o imThaiFlt.o imThaiIc.o imThaiIm.o imTrX.o \
+	imTransR.o PolyReg.o RestackWs.o QuKeybd.o  \
+	imKStoUCS.o lcUTF8Load.o QuCurShp.o extension.o  GetFProp.o \
+	GetSSaver.o SetSSaver.o QuBest.o xlibglue.o  GetPCnt.o XKB.o ChPntCon.o IntAtom.o GetAtomNm.o  \
+	mizerarc.o mifillarc.o
+
+all	: libX11.a xevent
+
+clean	:
+	rm *.o
+	rm libX11*
+	rm xevent
+	rm makekeys	
+	
+xevent	: xevent.c x11ioctl.h
+	gcc -o xevent -DTSMOUSE -DKBDENABLE xevent.c -lc -lts
+	cp xevent ../modules
+	
+
+libX11.a : rgb.h ks_tables.h $(LIBX11)
+	$(AR) rvc libX11.a  $(LIBX11)
+	ranlib libX11.a
+	cc -v -shared -nodefaultlibs $(LIBX11) -lm -lc -lgcc -Wl,-soname -Wl,libX11.so.6 -o libX11.so.6.2.1
+	strip libX11.so.6.2.1
+	
+# no rgb.txt in scratchbox
+rgb.h: rgb.txt rgb.awk
+	awk -f rgb.awk rgb.txt > $@
+
+ks_tables.h: makekeys.c /usr/X11R6/include/X11/keysymdef.h
+	gcc -I/usr/X11R6/include -o makekeys makekeys.c 
+	./makekeys < /usr/X11R6/include/X11/keysymdef.h > ks_tables.h
+
+
+.c.o :
+	$(CC) $(CFLAGS) -c $<
+
+
+

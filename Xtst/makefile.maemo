@@ -1,0 +1,27 @@
+.SUFFIXES:	.c .S .o
+
+CC= gcc -g -c
+LD= ld 
+AS= as
+AR= ar
+CPP= cpp
+LIBS=
+INCS=  -I/usr/include -I/usr/X11R6/include  -I/usr/X11R6/include/X11 -I/usr/X11R6/include/X11/extensions -I.
+DEFS= -Dlinux  -D_POSIX_C_SOURCE=199309L -D_POSIX_SOURCE -D_XOPEN_SOURCE -D_BSD_SOURCE -D_SVID_SOURCE  -D_GNU_SOURCE   -DFUNCPROTO=15 -DNARROWPROTO   -DMALLOC_0_RETURNS_NULL  -DHAS_SNPRINTF -DLIBX11  -DXLOCALEDIR=\"/usr/X11R6/lib/X11/locale\"  -DXTHREADS  -D_REENTRANT -DXUSE_MTSAFE_API
+CFLAGS= $(DEFS) $(INCS) -O3 -fpic -fPIC -march=armv5te 
+
+LIBXTST= XTest.o
+	
+
+libXtst.a : $(LIBXTST)
+	$(AR) rvc libXtst.a  $(LIBXTST)
+	ranlib libXtst.a
+	cc -v -shared -nodefaultlibs $(LIBXTST) -lm  -Wl,-soname -Wl,libXtst.so.6 -o libXtst.so.6.2.1
+	strip libXtst.so.6.2.1
+
+
+.c.o :
+	$(CC) $(CFLAGS) -c $<
+
+
+

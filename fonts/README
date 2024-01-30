@@ -1,0 +1,11 @@
+This directory contains some SNF fonts which are converted from X11 distribution's BDF fonts.
+See ../X11/xfonts.c on how these fonts are processed. LibX11 looks for *.snf and xfonts.dir in /usr/fonts.
+
+1. bdftosnf creates SNF format fonts from Adobe BDF fonts.
+2. mkxddir creates matching xfonts.dir which is a list of available fonts.
+3. copy *.snf and xfonts.dir to /usr/fonts on the target system. These fonts are used by older software
+   that only use X11 core fonts.
+4. If you have compiled in freetype,fontconfig, libXft, libXrender from the standard distribution. Then
+   both TrueType and Type 1 fonts will be available. Command fc-list will show available fonts
+5. If application only uses core X11 fonts than you only need to implement 3. Or if all applications only use
+   anti-aliased fonts than you don't need to install SNF fonts.
